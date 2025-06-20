@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Wings</title>
+  <style>
+    body, html {
+      margin: 0; padding: 0; height: 100%; background: black; overflow: hidden;
+    }
+    video {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    #playButton {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      padding: 1em 2em; font-size: 1.5em; cursor: pointer; background: rgba(255,255,255,0.2);
+      border: none; color: white; border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <video id="videoFly" autoplay muted playsinline>
+    <source src="fly.mp4" type="video/mp4" />
+    Tu navegador no soporta video HTML5.
+  </video>
+
+  <button id="playButton">Play sound</button>
+
+  <script>
+    const video = document.getElementById('videoFly');
+    const btn = document.getElementById('playButton');
+
+    btn.addEventListener('click', () => {
+      video.muted = false; 
+      video.play();
+      btn.style.display = 'none';  
+    });
+  </script>
+</body>
+</html>

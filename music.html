@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Álbumes</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: 'DM Serif Display', serif;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+    }
+
+    .album-container {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .album {
+      width: 200px;
+      height: 200px;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+      object-fit: cover;
+      border-radius: 10px;
+      user-select: none;
+      position: relative; /* por defecto */
+    }
+
+    .album.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .album.selected {
+      position: fixed !important;
+      z-index: 10;
+      width: 200px;
+      height: 200px;
+      border-radius: 15px;
+      /* no transición aquí para no bloquearla */
+    }
+
+    .texto {
+      position: fixed;
+      max-width: 500px;
+      line-height: 1;
+      font-size: 1.8rem;
+      color: #fff;
+      opacity: 0;
+      transform: translateX(-10px);
+      pointer-events: none;
+      user-select: none;
+      z-index: 5;
+      white-space: normal;
+      padding-left: 15px;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .texto.visible {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+      user-select: text;
+    }
+
+    .volver {
+      position: fixed;
+      bottom: 30px;
+      left: 30px;
+      background: #241268;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: none;
+      box-shadow: 0 0 10px #241268;
+      z-index: 15;
+      user-select: none;
+      margin-right: 10px;
+    }
+
+    .volver.visible {
+      display: inline-block;
+    }
+
+    .show-lyrics {
+      position: fixed;
+      bottom: 30px;
+      left: 150px;
+      background:#241268;
+      color: white;
+      border: none;
+      padding: 10px 10px;
+      font-size: 1.05rem;
+      border-radius: 6px;
+      cursor: pointer;
+      display: none;
+      box-shadow: 0 0 10px #241268;
+      z-index: 15;
+      user-select: none;
+    }
+
+    .show-lyrics.visible {
+      display: inline-block;
+    }
+
+
+    .letra-container {
+      position: fixed;
+      top: 0;
+      right: -500px;
+      width: 450px;
+      height: 100vh;
+      background-color: #111;
+      box-shadow: -5px 0 15px #241268cc;
+      color: #fff;
+      padding: 20px;
+      overflow-y: auto;
+      font-size: 1.2rem;
+      line-height: 1.5;
+      transition: right 0.5s ease;
+      z-index: 20;
+      user-select: text;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .letra-container.open {
+      right: 0;
+    }
+
+    .letra-close {
+      align-self: flex-end;
+      background: #241268;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 15px;
+      user-select: none;
+      box-shadow: 0 0 10px #241268;
+    }
+  </style>
+</head>
+<body>
+
+<div class="album-container" id="albums">
+  <img src="lovesboy.jpg" class="album" 
+       data-text="Soft as your memory in my brain, love in the deprivation of freedom when it achieves a new concept within so much violence, the ability to choose, even if it is the smallest" 
+       data-lyrics="And she eats love's boy
+       And she goes
+
+       You're gonna be okay
+       It's nothing but a good dream
+       Get back to your real life
+       And you'll find you'll forget
+       What it meant to be free really free
+       Whole towns and cities move
+       You're the king of the earth you choose
+       And you'll find what it means to be free
+       Come on in, let it flow
+       This is real, can you feel
+
+       And she eats love's boy
+       And she goes and she goes here
+
+       Come on in, let it flow
+       This is real, can you feel" 
+       data-audio="lovesboys.mp3" />
+  <img src="lovesong.jpeg" class="album" 
+       data-text="No need of words, I will always love you, with you I feel everything, my heart beats for you (Choosed the jack off jill version bc I know you like them)" 
+       data-lyrics="Whenever I'm alone with you
+You make me feel like I am home again
+Whenever I'm alone with you
+You make me feel like I am whole again
+
+Whenever I'm alone with you
+You make me feel like I am young again
+Whenever I'm alone with you
+You make me feel like I am fun again, again
+
+However far away, I will always love you
+However long I stay, I will always love you
+Whatever words I say, I will always love you
+I will always love you
+
+Whenever I'm alone with you
+You make me feel like I am free again
+Whenever I'm alone with you
+You make me feel like I am clean again, again
+
+However far away, I will always love you
+However long I stay, I will always love you
+Whatever words I say, I will always love you
+I will always love you
+
+Love you
+Love you
+Love you" 
+       data-audio="lovesong.mp3" />
+  <img src="apocalypse.jpeg" class="album" 
+       data-text="Your lips my lips...apocalypse<3" 
+       data-lyrics="You leapt from crumbling bridges watching cityscapes turn to dust
+       Filming helicopters crashing in the ocean from way above
+
+       Got the music in you, baby, tell me why
+       Got the music in you, baby, tell me why
+       You've been locked in here forever, and you just can't say goodbye
+
+       Kisses on the foreheads of the lovers wrapped in your arms
+       You've been hiding them in hollowed-out pianos left in the dark
+
+       Got the music in you, baby, tell me why
+       Got the music in you, baby, tell me why
+       You've been locked in here forever, and you just can't say goodbye
+
+       Your lips, my lips
+       Apocalypse
+       Your lips, my lips
+       Apocalypse
+
+       Go and sneak us through the rivers
+       Flood is rising up on your knees
+       Oh, please
+       Come out and haunt me, I know you want me
+       Come out and haunt me
+
+       Sharing all your secrets with each other since you were kids
+       Sleeping soundly with the locket that she gave you clutched in your fist
+
+       Got the music in you, baby, tell me why
+       Got the music in you, baby, tell me why
+       You've been locked in here forever, and you just can't say goodbye
+       You've been locked in here forever, and you just can't say goodbye
+
+       Oh, when you're all alone
+       I will reach for you
+       When you're feeling low
+       I will be there too" 
+       data-audio="apocalypse.mp3" />
+</div>
+
+<div class="texto" id="texto"></div>
+<button class="volver" id="volver">⬅ Back</button>
+<button class="show-lyrics" id="showLyrics">Show Lyrics</button>
+
+<div class="letra-container" id="letraContainer">
+  <button class="letra-close" id="closeLetra">Close ×</button>
+  <div id="letraTexto"></div>
+</div>
+
+<audio id="audio" loop></audio>
+
+<script>
+const albums = document.querySelectorAll('.album');
+const texto = document.getElementById('texto');
+const volver = document.getElementById('volver');
+const showLyrics = document.getElementById('showLyrics');
+const letraContainer = document.getElementById('letraContainer');
+const letraTexto = document.getElementById('letraTexto');
+const closeLetra = document.getElementById('closeLetra');
+const audio = document.getElementById('audio');
+const container = document.getElementById('albums');
+let seleccionado = null;
+
+albums.forEach(album => {
+  album.addEventListener('click', () => {
+    if (seleccionado) return; 
+
+    albums.forEach(a => {
+      if (a !== album) {
+        a.classList.add('hidden');
+        a.style.transition = 'none';
+      }
+    });
+
+    void container.offsetWidth;
+
+    albums.forEach(a => {
+      a.style.transition = 'opacity 0.3s ease';
+    });
+
+    const rect = album.getBoundingClientRect();
+
+    album.style.position = 'fixed';
+    album.style.top = rect.top + 'px';
+    album.style.left = rect.left + 'px';
+    album.style.zIndex = 10;
+
+    album.classList.add('selected');
+
+    album.offsetHeight;
+
+    album.style.transition = 'left 0.8s ease, top 0.8s ease';
+
+    requestAnimationFrame(() => {
+      album.style.left = '40px';
+    });
+
+    setTimeout(() => {
+      const albumHeight = rect.height;
+      const textoHeight = texto.offsetHeight || 120;
+      const textoTop = rect.top + albumHeight / 2 - textoHeight / 2;
+
+      texto.style.top = textoTop + 'px';
+      texto.style.left = '240px'; 
+      texto.textContent = album.dataset.text;
+      texto.classList.add('visible');
+
+      audio.src = album.dataset.audio;
+      audio.play().catch(() => {});
+
+      volver.classList.add('visible');
+      showLyrics.classList.add('visible');
+
+      seleccionado = album;
+    }, 800);
+  });
+});
+
+volver.addEventListener('click', () => {
+  if (!seleccionado) return;
+
+  texto.style.transition = 'none';
+
+  texto.classList.remove('visible');
+
+  setTimeout(() => {
+    texto.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+  }, 20);
+
+  volver.classList.remove('visible');
+  showLyrics.classList.remove('visible');
+  letraContainer.classList.remove('open');
+
+  audio.pause();
+  audio.currentTime = 0;
+
+  albums.forEach(a => {
+    a.classList.remove('hidden', 'selected');
+    a.style.transition = 'none';
+    a.style.position = '';
+    a.style.left = '';
+    a.style.top = '';
+    a.style.zIndex = '';
+    a.style.transform = '';
+    a.style.opacity = '';
+  });
+
+  seleccionado = null;
+});
+
+showLyrics.addEventListener('click', () => {
+  if (!seleccionado) return;
+
+ 
+  const rawLyrics = seleccionado.dataset.lyrics || "Letra no disponible.";
+  const paragraphs = rawLyrics.split('\n\n').map(parrafo => {
+
+    const withLineBreaks = parrafo.trim().replace(/\n/g, '<br>');
+    return `<p>${withLineBreaks}</p>`;
+  }).join('');
+
+  letraTexto.innerHTML = paragraphs;
+  letraContainer.classList.add('open');
+});
+
+closeLetra.addEventListener('click', () => {
+  letraContainer.classList.remove('open');
+});
+</script>
+
+</body>
+</html>

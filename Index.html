@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Key</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: black;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .pantalla {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      display: none;
+    }
+
+    #pantallaInicio {
+      display: block;
+      cursor: pointer;
+    }
+
+    img, video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    video {
+      pointer-events: none;
+    }
+
+   
+    .alerta {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(224, 205, 162, 0.95);
+      padding: 2em 3em;
+      border-radius: 12px;
+      text-align: center;
+      z-index: 999;
+      display: none;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.61);
+
+      border: 20px solid;}
+
+
+    .alerta h2 {
+      margin-bottom: 1em;
+      color: #1d0c00;
+      font-size: 1.5em;
+      font-weight: 700;
+      text-shadow: 1px 1px 2px rgba(163, 0, 0, 0.6);
+    }
+
+    .alerta button {
+      padding: 0.6em 2em;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 8px;
+      background-color: #A30000;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 4px 8px rgba(163, 0, 0, 0.7);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .alerta button:hover {
+      background-color: #700000;
+      box-shadow: 0 6px 12px rgba(112, 0, 0, 0.9);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="pantallaInicio" class="pantalla">
+    <img src="flor_cerrada.png" alt="Flor cerrada" />
+  </div>
+
+  <div id="pantallaVideo" class="pantalla"></div>
+
+  <div id="pantallaFinal" class="pantalla"></div>
+
+  <div id="alertaPersonalizada" class="alerta">
+    <h2>My heart is open to you</h2>
+    <button id="botonOk">Ok</button>
+  </div>
+
+  <script>
+    const pantallaInicio = document.getElementById("pantallaInicio");
+    const pantallaVideo = document.getElementById("pantallaVideo");
+    const pantallaFinal = document.getElementById("pantallaFinal");
+    const alerta = document.getElementById("alertaPersonalizada");
+    const botonOk = document.getElementById("botonOk");
+
+    pantallaInicio.addEventListener("click", () => {
+      pantallaInicio.style.display = "none";
+      pantallaVideo.style.display = "block";
+
+      const video = document.createElement("video");
+      video.src = "flortimelapse.mp4";
+      video.muted = true;
+      video.playsInline = true;
+      video.autoplay = true;
+      video.style.width = "100%";
+      video.style.height = "100%";
+      video.style.objectFit = "cover";
+
+      video.addEventListener("ended", () => {
+        pantallaVideo.style.display = "none";
+        alerta.style.display = "block";
+      });
+
+      pantallaVideo.appendChild(video);
+
+      setTimeout(() => {
+        video.play().catch((err) => {
+          console.error("Error al reproducir el video:", err);
+        });
+      }, 100);
+    });
+
+    botonOk.addEventListener("click", () => {
+      window.location.href = "Us.html";
+    });
+  </script>
+
+</body>
+</html>

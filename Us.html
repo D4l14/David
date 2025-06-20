@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Us</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #2a0000 url('https://www.transparenttextures.com/patterns/dark-mosaic.png');
+      font-family: 'DM Serif Display', serif;
+      color: #d8b8b8;
+      text-shadow: 0 0 6px #430b0bcc, 0 0 12px #300404cc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .borde-palpitante {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.6;
+  box-shadow:
+    inset 0 0 80px 25px rgba(0, 0, 0, 0.6),
+    inset 0 0 160px 35px rgba(0, 0, 0, 0.7);
+  transition: box-shadow 0.5s ease;
+}
+
+
+    .borde-palpitante.activo {
+      animation: bordePalpitante 2s infinite ease-in-out;
+    }
+
+    @keyframes bordePalpitante {
+      0%, 100% {
+        box-shadow:
+          inset 0 0 80px 25px rgba(0, 0, 0, 0.6),
+          inset 0 0 160px 35px rgba(0, 0, 0, 0.7);
+      }
+      50% {
+        box-shadow:
+          inset 0 0 140px 60px rgba(0, 0, 0, 0.75),
+          inset 0 0 240px 80px rgba(0, 0, 0, 0.9);
+      }
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      padding: 2rem 3rem;
+      box-sizing: border-box;
+      text-align: center;
+      user-select: text;
+      min-height: 300px;
+      border-radius: 12px;
+    }
+
+    .poema p {
+      font-family: 'Cinzel Decorative', cursive;
+      font-size: 1.35rem;
+      line-height: 1.7;
+      color: #d8b8b8;
+      margin-bottom: 2rem;
+      white-space: pre-line;
+      transition: opacity 0.6s ease, filter 0.6s ease;
+      filter: drop-shadow(0 0 4px #9b0000);
+      max-width: 100%;
+      display: none;
+    }
+
+    .poema p.active {
+      opacity: 1;
+      display: block;
+      color: #ff5959;
+      filter: drop-shadow(0 0 12px #ff5959);
+    }
+
+    a {
+      color: #ff5959;
+      font-family: 'Cinzel Decorative', cursive;
+      font-size: 1.35rem;
+      font-weight: 600;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    a::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -3px;
+      left: 0;
+      background-color: #ff5959;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+
+    a:hover {
+      color: #ff8080;
+    }
+
+    a:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .controls {
+      margin-top: 1rem;
+      z-index: 1;
+      display: flex;
+      gap: 1rem;
+    }
+
+    button {
+      background: #a30000;
+      border: none;
+      padding: 0.6em 1.5em;
+      color: white;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #a30000aa;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+
+    button:disabled {
+      background: #4b0000;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    button:hover:not(:disabled) {
+      background: #ff5050;
+    }
+
+    audio {
+      display: none;
+    }
+
+    .indice-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 4;
+      font-size: 2rem;
+      color: #ff5959;
+      cursor: pointer;
+      transition: transform 0.4s ease, filter 0.4s ease;
+      filter: drop-shadow(0 0 5px #ff8888aa);
+    }
+
+    .indice-toggle:hover {
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 10px #ffaaaa);
+    }
+
+    .indice-toggle.latido {
+      animation: latidoCorazon 1.4s infinite ease-in-out;
+    }
+
+    @keyframes latidoCorazon {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 6px #ff6666);
+      }
+      50% {
+        transform: scale(1.25);
+        filter: drop-shadow(0 0 16px #ffaaaa);
+      }
+    }
+
+    .indice {
+      position: fixed;
+      top: 4rem;
+      right: 1rem;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 1rem;
+      border-radius: 12px;
+      backdrop-filter: blur(4px);
+      font-family: 'Open Sans', sans-serif;
+      font-size: 0.9rem;
+      z-index: 3;
+      color: #ff9999;
+      display: none;
+      width: 160px;
+    }
+
+    .indice.open {
+      display: block;
+    }
+
+    .indice h3 {
+      margin-top: 0;
+      font-size: 1rem;
+      color: #ff5959;
+    }
+
+    .indice .etiqueta {
+      display: block;
+      color: #ffbbbb;
+      margin-bottom: 0.4rem;
+      text-decoration: underline dotted;
+      font-weight: 600;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+  <div class="borde-palpitante" id="borde"></div>
+
+  <i id="iconHeart" class="fas fa-heart indice-toggle"></i>
+
+  <nav class="indice">
+    <h3>Words</h3>
+    <span class="etiqueta">Art</span>
+    <span class="etiqueta">Music</span>
+    <span class="etiqueta">Wings</span>
+    <span class="etiqueta">Believe</span>
+  </nav>
+
+  <main>
+    <article class="poema">
+      <p>It’s hard—<br>Hard to write,<br>In a tongue that doesn’t feel right.<br>One I swore I’d keep outside,<br>Far from my <a href="art.html" target="_blank">art</a>,<br>Far from my pride.</p>
+      <p>I promised to keep it mine,<br>My roots, my pulse, my sacred line.<br>But I’m a fool, that much is true—<br>And love,<br>Love is you.</p>
+      <p>So yes, I’m a fool for you.</p>
+      <p>Here I am, again, the same,<br>No shields, no lies, no blame.<br>Kneeling soft at your feet,<br>Laying my soul,<br>Making it sweet.</p>
+      <p>But you’re not here, not really close,<br>And I don’t mind,<br>I don’t need most.<br>Because I’m yours—<br>And my heart’s about to burst.</p>
+      <p>Today I stared from a moving bus,<br>My <a href="music.html" target="_blank">music</a> low, the notes were dust.<br>The light caressed me like a breeze,<br>And all I wished<br>Was you in peace.</p>
+      <p>And every second I ask the sky:<br>Do you think of me when you cry?<br>Are you running?<br>Are you free?<br>Is your sorrow touching me?</p>
+      <p>Because I love you, yes, I do.<br>I want you near, I want your truth.<br>I want your arms, your warmth, your laugh,<br>I want your here,<br>Not just your half.</p>
+      <p>My heart grows <a href="wings.html" target="_blank">wings</a>—it wants to fly,<br>To reach your window,<br>Kiss your sky.<br>Just one breath, one silent sigh,<br>Not too much—<br>Just <em>you</em> and I.</p>
+      <p>You’re manna for my starving soul,<br>A whispered prayer, a sacred role.<br>It sounds insane,<br>I know it does—<br>I lost my faith,<br>But you became my cause.</p>
+      <p>Your lips, my church.<br>Your smile, my hymn.<br>Your shining soul,<br>My light within.</p>
+      <p>I <a href="believe.html" target="_blank">believe</a>, I vow, I bend the knee,<br>A worshipper of you and me.<br>I craft you art in every phrase,<br>My daily prayer,<br>My secret blaze.</p>
+      <p>Don’t come back—<br>Unless you’re free.<br>Just be happy,<br>Think of me.</p>
+      <p>I’ll be here, still burning bright,<br>With a rose,<br>A kiss,<br>A softer light.</p>
+      <p>A heart that beats,<br>A soul that stays,<br>No matter what<br>The world betrays.</p>
+      <p>Whatever comes<br>Or doesn’t be—<br>Only yours,<br>Eternally.</p>
+    </article>
+  </main>
+
+  <div class="controls">
+    <button id="prev">Back</button>
+    <button id="next">Next</button>
+    <button id="toggleSound">🔈</button>
+  </div>
+
+  <audio id="heartbeat" loop>
+    <source src="latido.mp3" type="audio/mpeg" />
+    Tu navegador no soporta audio.
+  </audio>
+
+  <script>
+    const estrofas = document.querySelectorAll('.poema p');
+    let index = 0;
+
+    function showEstrofa(i) {
+      estrofas.forEach((p, idx) => {
+        p.classList.toggle('active', idx === i);
+        if (idx === i) p.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+      document.getElementById('prev').disabled = i === 0;
+      document.getElementById('next').disabled = i === estrofas.length - 1;
+    }
+
+    document.getElementById('prev').addEventListener('click', () => {
+      if (index > 0) index--;
+      showEstrofa(index);
+    });
+
+    document.getElementById('next').addEventListener('click', () => {
+      if (index < estrofas.length - 1) index++;
+      showEstrofa(index);
+    });
+
+    showEstrofa(index);
+
+    const audio = document.getElementById("heartbeat");
+    const toggleBtn = document.getElementById("toggleSound");
+    const borde = document.getElementById("borde");
+    const iconHeart = document.getElementById("iconHeart");
+    let audioTouched = false;
+
+    function activarLatido() {
+      borde.classList.add("activo");
+      iconHeart.classList.add("latido");
+    }
+
+    function desactivarLatido() {
+      borde.classList.remove("activo");
+      iconHeart.classList.remove("latido");
+    }
+
+    toggleBtn.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play().then(() => {
+          toggleBtn.textContent = "🔊";
+          audioTouched = true;
+          activarLatido();
+        }).catch(() => {});
+      } else {
+        audio.pause();
+        toggleBtn.textContent = "🔈";
+        desactivarLatido();
+      }
+    });
+
+    function handleFirstInteraction() {
+      if (!audioTouched) {
+        audio.play().then(() => {
+          toggleBtn.textContent = "🔊";
+          audioTouched = true;
+          activarLatido();
+        }).catch(() => {});
+      }
+      window.removeEventListener("click", handleFirstInteraction);
+    }
+
+    window.addEventListener("click", handleFirstInteraction);
+
+    iconHeart.addEventListener("click", () => {
+      document.querySelector(".indice").classList.toggle("open");
+    });
+  </script>
+</body>
+</html>
