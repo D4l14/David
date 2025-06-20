@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tres imágenes creativas</title>
+  <style>
+    body, html {
+      margin: 0; padding: 0; height: 100%;
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      gap: 20px;
+      max-width: 90vw;
+      width: 800px;
+    }
+
+    .image-box {
+      flex: 1;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .image-box img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .image-box:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 30px rgba(255, 255, 255, 0.35);
+      z-index: 10;
+    }
+
+    .image-box:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Para móviles */
+    @media (max-width: 600px) {
+      .container {
+        flex-direction: column;
+        width: 90vw;
+      }
+
+      .image-box {
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="image-box">
+      <img src="imagen1.jpg" alt="Imagen 1" />
+    </div>
+    <div class="image-box">
+      <img src="imagen2.jpg" alt="Imagen 2" />
+    </div>
+    <div class="image-box">
+      <img src="imagen3.jpg" alt="Imagen 3" />
+    </div>
+  </div>
+</body>
+</html>
